@@ -1,21 +1,26 @@
 import React, { useRef } from 'react';
 import { Animated, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { FontAwesome,AntDesign} from '@expo/vector-icons';
+import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import CartEmpty from '../components/CartEmpty';
 const DATA = [
     { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
-    { id: '2', name: 'Ürün 2', price: '30 TL' },
-    { id: '3', name: 'Ürün 3', price: '25 TL' },
-    { id: '4', name: 'Ürün 4', price: '15 TL' },
-    { id: '5', name: 'Ürün 5', price: '40 TL' },
-    { id: '6', name: 'Ürün 6', price: '22 TL' },
-    { id: '7', name: 'Ürün 7', price: '18 TL' },
-    { id: '8', name: 'Ürün 8', price: '35 TL' },
-    { id: '9', name: 'Ürün 9', price: '28 TL' },
-    { id: '10', name: 'Ürün 10', price: '17 TL' },
-    { id: '11', name: 'Ürün 11', price: '27 TL' },
-    { id: '12', name: 'Ürün 12', price: '19 TL' },
-    // ... Daha fazla ürün
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+    { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
+  
+
 ];
 
 const Header_Max_Height = 80;
@@ -23,7 +28,7 @@ const Header_Min_Height = 80;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
 const handleTrash = () => {
     alert('trash butonuna tıklandı');
-  };
+};
 
 const DynamicHeader = ({ value }) => {
     const animatedHeaderHeight = value.interpolate({
@@ -59,17 +64,14 @@ const ScrollViewScreen = () => {
 
     const handleGoToHome = () => {
         alert('Ana Sayfa butonuna tıklandı');
-        // Burada ana sayfaya yönlendirme işlemini gerçekleştirebilirsiniz.
     };
 
     const handleGoToCart = () => {
         alert('Sepete Git butonuna tıklandı');
-        // Burada sepete yönlendirme işlemini gerçekleştirebilirsiniz.
     };
 
     const handleGoToProfile = () => {
         alert('Profil butonuna tıklandı');
-        // Burada profil sayfasına yönlendirme işlemini gerçekleştirebilirsiniz.
     };
 
 
@@ -83,14 +85,14 @@ const ScrollViewScreen = () => {
                         useNativeDriver: false,
                     },
                 )}
-                contentContainerStyle={{ paddingBottom: 50 }} 
+                contentContainerStyle={{ paddingBottom: 360 }}
 
             >
                 <DynamicHeader value={scrollOffsetY} />
                 <View style={styles.productContainer}>
                     {DATA.map((product) => (
                         <View style={styles.card} key={product.id}>
-                            <View style={styles.imageContainer} > 
+                            <View style={styles.imageContainer} >
                                 <Image
                                     source={require("../../assets/nike.jpg")}
                                     style={styles.productImage}
@@ -120,6 +122,15 @@ const ScrollViewScreen = () => {
                         </View>
                     ))}
                 </View>
+
+                <View style={styles.container}>
+                    <View style={styles.blueBox} >
+                        <Text style={{marginLeft:30 ,fontSize:15,fontWeight:'bold'}}>Sepet Tutarı</Text>
+                        <View style={styles.redBox} >
+                            <Text style={{marginLeft:25 ,fontSize:15,fontWeight:'bold',color:'white'}}>500 TL</Text>
+                            </View>
+                    </View>
+                </View>
             </ScrollView>
             <View style={styles.footer}>
                 <TouchableOpacity onPress={handleGoToHome} style={styles.footerButton}>
@@ -132,6 +143,7 @@ const ScrollViewScreen = () => {
                     <AntDesign name="user" size={24} color="white" />
                 </TouchableOpacity>
             </View>
+
         </View>
     );
 };
@@ -180,7 +192,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flex: 0.3,
-        marginLeft:15,
+        marginLeft: 15,
 
     },
     productName: {
@@ -210,7 +222,7 @@ const styles = StyleSheet.create({
         flex: 0.5,
         justifyContent: 'center',
         alignItems: 'center',
-         flex: 0.5
+        flex: 0.5
     },
     footer: {
         position: 'absolute',
@@ -221,7 +233,7 @@ const styles = StyleSheet.create({
         padding: 7,
         borderTopWidth: 1,
         borderTopColor: '#ccc',
-        flexDirection: 'row', 
+        flexDirection: 'row',
         justifyContent: 'space-between',
     },
     footerButton: {
@@ -237,6 +249,28 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
+    },
+    container: {
+        flexDirection: 'row',
+        height: 90,
+        padding: 20,
+    },
+    blueBox: {
+        backgroundColor: 'white',
+        flex: 1,
+        borderRadius: 19,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    redBox: {
+        backgroundColor: '#8c52ff',
+        width: 100,
+        position: 'absolute',
+        right: 0,
+        height: '100%',
+        borderRadius: 19,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
     },
 
 });
