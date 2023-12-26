@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
+import { View, Image, StyleSheet, TextInput, TouchableOpacity, Text ,Alert} from 'react-native';
 import { Dimensions } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase('projectD.db');
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -18,9 +21,30 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    alert(`Giriş Bilgileri\nEmail: ${email}\nŞifre: ${password}`);
-  };
+    if (email === '' || password === '') {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
+      return;
+    }
 
+    db.transaction((tx) => {
+      tx.executeSql(
+        'SELECT * FROM users WHERE email = ? AND password = ?',
+        [email, password],
+        (tx, results) => {
+          if (results.rows.length > 0) {
+            Alert.alert('Başarılı', 'Giriş başarıyla tamamlandı.', [
+              { text: 'Tamam', onPress: () => navigation.navigate('HomeScreen') },
+            ]);
+          } else {
+            Alert.alert('Hata', 'Giriş bilgileri geçersiz.');
+          }
+        },
+        (error) => {
+          console.error('SQLite hatası:', error);
+        }
+      );
+    });
+  };
   const handleSignUp = () => {
     navigation.navigate('Register');
 

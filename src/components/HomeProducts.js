@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { SimpleLineIcons } from '@expo/vector-icons';
+import { Animated, ScrollView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Alert } from 'react-native';
+import { SimpleLineIcons, AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const DATA = [
   { id: '1', name: 'Ürün 1', price: '20 TL' },
@@ -29,7 +30,7 @@ const Header_Max_Height = 80;
 const Header_Min_Height = 80;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
 
-const DynamicHeader = ({ value }) => {
+const DynamicHeader = ({ value, navigation }) => {
   const animatedHeaderHeight = value.interpolate({
     inputRange: [0, Scroll_Distance],
     outputRange: [Header_Max_Height, Header_Min_Height],
@@ -38,8 +39,15 @@ const DynamicHeader = ({ value }) => {
 
   const animatedHeaderColor = "#8c52ff"
   const handleBasketIconPress = () => {
-    alert('Sepet ikonuna tıklandı!');
+    navigation.navigate('CartScreen');
+
   };
+
+  const handleUserIconPress = () => {
+    navigation.navigate('ProfileScreen');
+  };
+
+
 
   return (
     <Animated.View
@@ -60,7 +68,10 @@ const DynamicHeader = ({ value }) => {
           />
         </View>
         <TouchableOpacity onPress={handleBasketIconPress}>
-          <SimpleLineIcons name="basket" size={24} color="black" style={styles.icon} />
+          <SimpleLineIcons name="basket" size={24} color="white" style={styles.icon} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleUserIconPress} >
+          <AntDesign name="user" size={24} color="white" style={{ marginRight: 5 }} />
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -69,25 +80,62 @@ const DynamicHeader = ({ value }) => {
 
 const ScrollViewScreen = () => {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
-  const groupedData = groupData(DATA, 2); 
+  const navigation = useNavigation();
+
+  const groupedData = groupData(DATA, 2);
+  const handleSepeteEkle = () => {
+    Alert.alert('sepete eklendi')
+  };
+
+  const handleProduct = () => {
+    navigation.navigate('SingleProductScreen')
+  };
+
 
   return (
     <View>
       <ScrollView
-        stickyHeaderIndices={[0]} 
+        stickyHeaderIndices={[0]}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
           {
             useNativeDriver: false,
           },
         )}
+        scrollEventThrottle={16}
+
       >
-        <DynamicHeader value={scrollOffsetY} />
+
+        <DynamicHeader value={scrollOffsetY} navigation={navigation} />
         {groupedData.map((group, index) => (
           <View style={styles.rowContainer} key={index}>
             {group.map((val) => (
               <View style={styles.card} key={val.id}>
-                <Text style={styles.subtitle}>({val.id})</Text>
+                <TouchableOpacity onPress={ handleProduct} style={{ flex: 1 }}>
+                  <View style={{ flex: 1, marginTop: 30 }}>
+                    <Image
+                      source={require("../../assets/nike.jpg")}
+                      style={styles.productImage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </TouchableOpacity>
+
+                <View style={{ marginBottom: 2, alignItems: 'center', flexDirection: 'column', marginTop: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: '#8c52ff', fontSize: 15 }}>Nike Air Force</Text>
+                </View>
+
+                <View style={{ marginBottom: 2, alignItems: 'center', flexDirection: 'column', marginTop: 10 }}>
+                  <Text style={{ fontWeight: 'bold', color: '#8c52ff', fontSize: 15 }}>1560 TL</Text>
+                </View>
+                <View style={{ flex: 0.4 }}></View>
+                <TouchableOpacity style={styles.buttonContainer} onPress={handleSepeteEkle}>
+                  <Text style={styles.buttonText}>
+                    Sepete Ekle
+                  </Text>
+
+                </TouchableOpacity>
+
               </View>
             ))}
           </View>
@@ -96,7 +144,6 @@ const ScrollViewScreen = () => {
     </View>
   );
 };
-
 
 const groupData = (data, groupSize) => {
   const groupedData = [];
@@ -133,23 +180,41 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   icon: {
-    marginRight: 30,
+    marginRight: 40,
   },
   card: {
     flex: 1,
-    height: 350, 
-    width: '48%', 
+    height: 250,
+    width: '48%',
     backgroundColor: 'white',
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: 60,
     borderWidth: 1,
-    marginLeft:5,
-    marginRight:5,
+    marginLeft: 5,
+    marginRight: 5,
+
   },
   subtitle: {
     color: '#181D31',
     fontWeight: 'bold',
+  },
+  productImage: {
+    height: '100%',
+    width: '100%',
+    marginBottom: 1,
+  },
+  buttonText: {
+    marginTop: 10,
+    color: 'white',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    backgroundColor: '#8c52ff',
+    padding: 4,
+    borderRadius: 40,
+    alignItems: 'center',
+    width: '90%',
+    marginLeft: 8,
+    marginBottom: 10
   },
 });
 

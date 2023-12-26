@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5,Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 export default function PaymentScreen() {
+  const navigation = useNavigation();
+
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [prevSelectedIndex, setPrevSelectedIndex] = useState(null);
 
@@ -22,10 +25,16 @@ export default function PaymentScreen() {
   };
 
   return (
-    <View style={styles.container}>
+     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Adres</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        <View style={{marginLeft:70}}> 
+        <Text style={styles.headerText}>Ödeme Yöntemi</Text>
+        </View>
       </View>
+
 
       <View style={styles.iconContainer}>
         <TouchableOpacity
@@ -69,9 +78,14 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#8c52ff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
     height: 80,
+    paddingLeft: 10, 
+  },
+  backButton: {
+    marginRight: 10, 
   },
   headerText: {
     fontSize: 18,

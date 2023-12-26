@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, TextInput, TouchableOpacity, Text } from 'react-native';
-import { Dimensions } from 'react-native';
+import { Dimensions ,Alert} from 'react-native';
 import { Entypo ,FontAwesome} from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import * as SQLite from 'expo-sqlite';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const calculatedWidth = windowWidth;
 const calculatedHeight = (calculatedWidth / 720) * 1080;
+
+
 
 export default function RegisterScreen() {
   const navigation = useNavigation();
@@ -18,15 +21,65 @@ export default function RegisterScreen() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+
+  const db = SQLite.openDatabase('projectD.db');
+
+  db.transaction((tx) => {
+    tx.executeSql(
+      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL);',
+      );
+  });
+  
+
   const handleLogin = () => {
     navigation.navigate('Login');
 
   };
 
   const handleSignUp = () => {
-    alert("Kaydolma işlemleri burada gerçekleştirilecek");
+    if (name === "") {
+      Alert.alert('İsim alanı boş bırakılamaz');
+    } else if (email === "") {
+      Alert.alert('E-posta alanı boş bırakılamaz');
+    } else if (password === "") {
+      Alert.alert('Şifre alanı boş bırakılamaz');
+    } else {
+      db.transaction((tx) => {
+        tx.executeSql(
+          'SELECT * FROM users WHERE email = ?',
+          [email],
+          (tx, results) => {
+            if (results.rows.length > 0) {
+              Alert.alert( 'Bu e-posta adresi zaten kullanımda.');
+            } else {
+              tx.executeSql(
+                'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+                [name, email, password],
+                (tx, results) => {
+                  if (results.rowsAffected > 0) {
+                    Alert.alert('Başarılı', 'Kayıt başarıyla tamamlandı.');
+                  } else {
+                    console.log('Etkilenen satır yok:', results.rowsAffected);
+                    console.log('Satırlar:', results.rows);
+                    Alert.alert('Hata', 'Kayıt sırasında bir hata oluştu.');
+                  }
+                },
+                (error) => {
+                  console.error('SQLite hatası kayıt sırasında:', error);
+                  Alert.alert('Hata', 'Kayıt sırasında bir hata oluştu.');
+                }
+              );
+            }
+          },
+          (error) => {
+            console.error('SQLite hatası e-posta kontrolü sırasında:', error);
+            Alert.alert('Hata', 'E-posta kontrolü sırasında bir hata oluştu.');
+          }
+        );
+      });
+    }
   };
-
+  
   return (
     <View style={styles.container}>
       <Image

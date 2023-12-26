@@ -1,15 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+
+
 
 export default function ShippingScreen() {
+  const navigation = useNavigation();
+
   const handleButtonPress = () => {
-    Alert.alert('Butona Basıldı', 'Butona basıldı alerti!');
+    navigation.navigate('PaymentScreen');
+
   };
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.header}>
-        <Text style={styles.headerText}>Adres</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+        <View style={{marginLeft:110}}> 
+        <Text style={styles.headerText}> Adres</Text>
+        </View>
       </View>
 
       <View style={styles.inputContainer}>
@@ -42,9 +55,14 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#8c52ff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row', // Yatay düzenleme
+    justifyContent: 'flex-start', // Başlık sola yaslanacak
+    alignItems: 'center', // Başlık ve butonları dikeyde hizalama
     height: 80,
+    paddingLeft: 10, // Sol kenardan boşluk bırakma
+  },
+  backButton: {
+    marginRight: 10, // Geri butonunu başlık ile ayırmak için sağa boşluk
   },
   headerText: {
     fontSize: 18,

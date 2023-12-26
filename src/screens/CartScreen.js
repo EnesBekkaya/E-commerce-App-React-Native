@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
-import { Animated, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, View, Image, TouchableOpacity,Alert } from 'react-native';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
-import CartEmpty from '../components/CartEmpty';
+import { useNavigation } from '@react-navigation/native';
+
 const DATA = [
     { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
     { id: '1', name: 'Ürün 1 hakkında bilgilerin yaızldığı yer burasıdır', price: '20 TL' },
@@ -23,6 +24,8 @@ const DATA = [
 
 ];
 
+
+
 const Header_Max_Height = 80;
 const Header_Min_Height = 80;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
@@ -38,10 +41,7 @@ const DynamicHeader = ({ value }) => {
     });
 
     const animatedHeaderColor = "#8c52ff"
-    const handleBasketIconPress = () => {
-        alert('Sepet ikonuna tıklandı!');
-    };
-
+    
     return (
         <Animated.View
             style={[
@@ -61,19 +61,22 @@ const DynamicHeader = ({ value }) => {
 
 const ScrollViewScreen = () => {
     const scrollOffsetY = useRef(new Animated.Value(0)).current;
+    const navigation = useNavigation();
 
     const handleGoToHome = () => {
-        alert('Ana Sayfa butonuna tıklandı');
+        navigation.navigate('HomeScreen');
+
     };
 
     const handleGoToCart = () => {
-        alert('Sepete Git butonuna tıklandı');
     };
 
     const handleGoToProfile = () => {
-        alert('Profil butonuna tıklandı');
+        navigation.navigate('ProfileScreen');
     };
-
+    const handleContinue = () => {
+        navigation.navigate('ShippingScreen');
+    };
 
     return (
         <View>
@@ -85,10 +88,11 @@ const ScrollViewScreen = () => {
                         useNativeDriver: false,
                     },
                 )}
-                contentContainerStyle={{ paddingBottom: 360 }}
+                contentContainerStyle={{ paddingBottom: 120 }}
+                scrollEventThrottle={16} 
 
             >
-                <DynamicHeader value={scrollOffsetY} />
+        <DynamicHeader value={scrollOffsetY} navigation={navigation} />
                 <View style={styles.productContainer}>
                     {DATA.map((product) => (
                         <View style={styles.card} key={product.id}>
@@ -130,6 +134,16 @@ const ScrollViewScreen = () => {
                             <Text style={{marginLeft:25 ,fontSize:15,fontWeight:'bold',color:'white'}}>500 TL</Text>
                             </View>
                     </View>
+                </View>
+
+                <View style={styles.continuButton}>
+                <TouchableOpacity style={styles.continuButton} onPress={handleContinue}>
+
+                    <View style={{marginLeft:60,height:28,marginTop:6}} >
+                        <Text style={{marginLeft:30 ,fontSize:15,fontWeight:'bold',color:'white'}}>Devam Et</Text>
+
+                    </View>
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
             <View style={styles.footer}>
@@ -272,7 +286,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'flex-start',
     },
-
+    continuButton: {
+        backgroundColor: '#8c52ff',
+        flexDirection: 'row',
+        padding: 5,
+        width: '70%',
+        borderRadius: 30,
+        alignSelf: 'center', 
+    },
+    
 });
 
 export default ScrollViewScreen;

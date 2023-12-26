@@ -2,14 +2,24 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function Profile() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
 
   const handleUpdateProfile = () => {
     console.log('Profil güncellendi');
   };
-
+  const handleExit = () => {
+    navigation.navigate('Login');
+  };
+  const handleHome = () => {
+    navigation.navigate('HomeScreen');
+  };
+  
+  
   return (
     <View style={styles.container}>
       <Input
@@ -37,19 +47,29 @@ export default function Profile() {
         onPress={handleUpdateProfile}>
         <Text style={styles.buttonText}>Profili Güncelle</Text>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.updateButton}
+        onPress={handleHome}>
+        <Text style={styles.buttonText}>Anasayfa</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.updateButton}
+        onPress={handleExit}>
+        <Text style={styles.buttonText}>Çıkış Yap</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
   },
   updateButton: {
     backgroundColor: '#8c52ff',
-    padding: 15,
+    padding: 12,
     borderRadius: 8,
-    marginTop: 20,
+    marginTop: 10,
     alignItems: 'center',
   },
   buttonText: {

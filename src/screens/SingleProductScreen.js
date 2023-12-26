@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import NumericInput from 'react-native-numeric-input';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeSearch() {
+  const navigation = useNavigation();
+
   const handleBasketIconPress = () => {
-    alert('Sepete eklendi!');
+    navigation.navigate('CartScreen')
   };
 
-  const ProductDetailScreen = () => { };
   const [expanded, setExpanded] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -32,13 +35,16 @@ export default function HomeSearch() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={30} color="white" />
+        </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
           placeholder="Ara..."
           placeholderTextColor="#ccc"
         />
         <TouchableOpacity onPress={handleBasketIconPress}>
-          <SimpleLineIcons name="basket" size={24} color="black" style={styles.icon} />
+          <SimpleLineIcons name="basket" size={24} color="white" style={styles.icon} />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.descriptionContainer}>
@@ -138,9 +144,10 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     marginTop: 15,
+    marginRight:10,
   },
   icon: {
-    marginLeft: 10,
+    marginLeft: 0,
     marginTop: 12,
   },
   product: {
@@ -195,4 +202,8 @@ const styles = StyleSheet.create({
   actionIcon: {
     marginBottom: 10,
   },
+  backButton:{
+    marginRight:30,
+    marginTop:20
+  }
 });

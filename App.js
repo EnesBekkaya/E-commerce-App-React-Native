@@ -9,20 +9,31 @@ import CartEmpty from './src/components/CartEmpty';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ShippingScreen from './src/screens/ShippingScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
+import HomeScreen from './src/screens/HomeScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="PaymentScreen">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="SingleProduct"
           component={SingleProductScreen}
           options={{ headerShown: false }} 
         />
+         <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ headerShown: false }} 
+        />
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{ headerShown: false }} 
+        />
+         <Stack.Screen
+          name="SingleProductScreen"
+          component={SingleProductScreen}
           options={{ headerShown: false }} 
         />
         <Stack.Screen
