@@ -21,6 +21,8 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
+ 
+      
     if (email === '' || password === '') {
       Alert.alert('Hata', 'Lütfen tüm alanları doldurun.');
       return;

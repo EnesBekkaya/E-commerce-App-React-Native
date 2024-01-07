@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { SimpleLineIcons, FontAwesome } from '@expo/vector-icons';
 import NumericInput from 'react-native-numeric-input';
 import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+
 import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeSearch() {
+
+
+
+
+export default function SingleProductScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { product } = route.params;
 
   const handleBasketIconPress = () => {
-    navigation.navigate('CartScreen')
   };
 
   const [expanded, setExpanded] = useState(false);
@@ -29,13 +36,13 @@ export default function HomeSearch() {
   };
 
   const handleSepeteEkle = () => {
-    alert('Sepete ekleme işlemleri burada gerçekleştirilecek');
+    Alert.alert("Ürün sepete eklendi.")
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={30} color="white" />
         </TouchableOpacity>
         <TextInput
@@ -49,13 +56,18 @@ export default function HomeSearch() {
       </View>
       <ScrollView style={styles.descriptionContainer}>
         <View style={styles.product}>
-          <Image
-            source={require("../../assets/nike.jpg")} 
-            style={styles.image}
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              source={product.image}
+              style={styles.image}
+              resizeMode="contain"
+              resizeMethod="resize"
+            />
+          </View>
+
           <View style={styles.detailsContainer}>
-            <Text style={styles.productName}>Ürün Adı</Text>
-            <Text style={styles.productPrice}>50 TL</Text>
+            <Text style={styles.productName}> {product.name}</Text>
+            <Text style={styles.productPrice}>  {product.price}  </Text>
             <View style={styles.actionsContainer}>
               <NumericInput
                 value={value}
@@ -92,14 +104,12 @@ export default function HomeSearch() {
                 <Text style={styles.buttonText}> Sepete ekle</Text>
               </TouchableOpacity>
             </View>
-           
-                <Text style={styles.productDescription}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula sapien at elit posuere,
-                  ut hendrerit neque ultricies. Proin euismod enim auctor, posuere elit a, hendrerit nisi. Nulla facilisi.
-                  Vivamus bibendum, turpis id cursus dictum, justo purus ullamcorper nisi, nec fermentum sapien lacus at nulla.
-                </Text>
-          
-          
+
+            <Text style={styles.productDescription}>
+              {product.des}
+            </Text>
+
+
           </View>
         </View>
       </ScrollView>
@@ -116,11 +126,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#8c52ff',
     padding: 15,
     borderRadius: 19,
-    marginTop:10,
+    marginTop: 10,
     alignItems: 'center',
     marginBottom: 10,
-    marginLeft:10,
-    paddingHorizontal:'25%',
+    marginLeft: 10,
+    paddingHorizontal: '25%',
   },
   buttonText: {
     color: 'white',
@@ -144,7 +154,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 1,
     marginTop: 15,
-    marginRight:10,
+    marginRight: 10,
   },
   icon: {
     marginLeft: 0,
@@ -154,11 +164,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 70,
   },
-  image: {
+  imageContainer: {
     width: '80%',
     height: 150,
-    resizeMode: 'cover',
     borderRadius: 8,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
   },
   detailsContainer: {
     marginTop: 16,
@@ -182,16 +197,18 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     marginTop: 8,
-    borderRadius:8,
+    borderRadius: 8,
+
 
   },
   productDescription: {
-    marginLeft:10,
-    marginRight:10,
-    fontSize: 12,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop:20,
+    fontSize: 20,
     lineHeight: 24,
     color: '#555',
-    
+
   },
   actionsContainer: {
     flexDirection: 'row',
@@ -202,8 +219,8 @@ const styles = StyleSheet.create({
   actionIcon: {
     marginBottom: 10,
   },
-  backButton:{
-    marginRight:30,
-    marginTop:20
+  backButton: {
+    marginRight: 30,
+    marginTop: 20
   }
 });

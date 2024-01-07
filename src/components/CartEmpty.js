@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const CartEmpty = () => {
+  const navigation = useNavigation();
+
   const handleStartShopping = () => {
-    console.log('Alışverişe başla butonuna tıklandı');
+    navigation.navigate("HomeScreen")
   };
 
   return (

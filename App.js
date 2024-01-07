@@ -10,12 +10,16 @@ import ProfileScreen from './src/screens/ProfileScreen';
 import ShippingScreen from './src/screens/ShippingScreen';
 import PaymentScreen from './src/screens/PaymentScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import AdminScreen from './src/screens/AdminScreen';
+import FavoriteScreen from './src/screens/FavoriteScreen';
+import WishList from './src/screens/WishList';
+
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="AdminScreen">
         <Stack.Screen
           name="SingleProduct"
           component={SingleProductScreen}
@@ -66,6 +70,22 @@ export default function App() {
           component={PaymentScreen}
           options={{ headerShown: false }} 
         />
+        <Stack.Screen
+          name="AdminScreen"
+          component={AdminScreen}
+          options={{ headerShown: false }} 
+        />
+         <Stack.Screen
+          name="FavoriteScreen"
+          component={FavoriteScreen}
+          options={{ headerShown: false }} 
+        />
+          <Stack.Screen
+          name="WishList"
+          component={WishList}
+          options={{ headerShown: false }} 
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

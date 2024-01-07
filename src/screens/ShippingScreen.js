@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: '#8c52ff',
-    flexDirection: 'row', // Yatay düzenleme
-    justifyContent: 'flex-start', // Başlık sola yaslanacak
-    alignItems: 'center', // Başlık ve butonları dikeyde hizalama
+    flexDirection: 'row',
+    justifyContent: 'flex-start', 
+    alignItems: 'center',
     height: 80,
-    paddingLeft: 10, // Sol kenardan boşluk bırakma
+    paddingLeft: 10,
   },
   backButton: {
-    marginRight: 10, // Geri butonunu başlık ile ayırmak için sağa boşluk
+    marginRight: 10, 
   },
   headerText: {
     fontSize: 18,

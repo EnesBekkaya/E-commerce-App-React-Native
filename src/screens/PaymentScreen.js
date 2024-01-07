@@ -21,7 +21,8 @@ export default function PaymentScreen() {
   };
 
   const handleButtonPress = () => {
-    Alert.alert('Butona Basıldı', 'Butona basıldı alert!');
+    Alert.alert("Siparişiniz alındı.Teşekkürler.");
+    navigation.navigate("HomeScreen");
   };
 
   return (

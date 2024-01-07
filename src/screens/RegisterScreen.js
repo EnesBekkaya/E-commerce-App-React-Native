@@ -26,7 +26,7 @@ export default function RegisterScreen() {
 
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL);',
+      'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, email TEXT UNIQUE NOT NULL, password TEXT NOT NULL,admin BOOLEAN);',
       );
   });
   
@@ -54,7 +54,7 @@ export default function RegisterScreen() {
             } else {
               tx.executeSql(
                 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-                [name, email, password],
+                [name, email, password,false],
                 (tx, results) => {
                   if (results.rowsAffected > 0) {
                     Alert.alert('Başarılı', 'Kayıt başarıyla tamamlandı.');

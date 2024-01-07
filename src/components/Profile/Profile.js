@@ -1,34 +1,47 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import { Input } from 'react-native-elements';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-
 
 export default function Profile() {
   const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
 
   const handleUpdateProfile = () => {
-    console.log('Profil güncellendi');
+    if (!username || !email || !password) {
+      Alert.alert('Hata', 'Lütfen tüm alanları doldurun');
+      return;
+    }
+
+    Alert.alert('Profil güncellendi');
   };
+
   const handleExit = () => {
     navigation.navigate('Login');
   };
+
   const handleHome = () => {
     navigation.navigate('HomeScreen');
   };
-  
-  
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <View style={styles.container}>
       <Input
         placeholder="Kullanıcı Adı"
         leftIcon={<FontAwesome name="user" size={24} color="#8c52ff" />}
+        onChangeText={(text) => setUsername(text)}
+        value={username}
       />
       <Input
         placeholder="E-posta"
         leftIcon={<Entypo name="mail" size={24} color="#8c52ff" />}
+        onChangeText={(text) => setEmail(text)}
+        value={email}
       />
       <Input
         placeholder="Şifre"
@@ -41,6 +54,8 @@ export default function Profile() {
             onPress={() => setShowPassword(!showPassword)}
           />
         }
+        onChangeText={(text) => setPassword(text)}
+        value={password}
       />
       <TouchableOpacity
         style={styles.updateButton}
